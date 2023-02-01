@@ -15,7 +15,7 @@ export const GameViewContainer = styled.div`
   align-items: center;
   justify-content: space-around;
   width: 100%;
-  height: 80%;
+  height: 100%;
   max-width: 1000px;
 `
 export const ScoreContainer = styled.div`
@@ -26,20 +26,16 @@ export const ScoreContainer = styled.div`
   border: 2px solid #ffffff;
   border-radius: 9px;
   width: 100%;
+  margin-bottom: 20px;
 `
-export const GameNameContainer = styled.ul`
-  list-style-type: none;
-  padding-left: 0px;
-  margin: 0px;
-`
-export const GameName = styled.li`
+export const GameName = styled.h1`
   font-family: Bree Serif;
   font-size: 15px;
   color: #ffffff;
   font-weight: bold;
   letter-spacing: 1px;
-  margin-bottom: 10px;
   margin: 0px;
+  width: 100px;
   @media (min-width: 768px) {
     font-size: 20px;
   }
@@ -57,7 +53,7 @@ export const Score = styled.div`
     width: 150px;
   }
 `
-export const ScoreHeading = styled.h1`
+export const ScoreHeading = styled.p`
   font-family: Bree Serif;
   font-size: 25px;
   color: #223a5f;
@@ -68,7 +64,7 @@ export const ScoreHeading = styled.h1`
   }
 `
 export const ScoreParagraph = styled.p`
-  font-family: Bree Serif;
+  font-family: Roboto;
   font-size: 25px;
   color: #223a5f;
   font-weight: bold;
@@ -110,4 +106,13 @@ export const RulesImg = styled.img`
 export const CloseIcon = styled(RiCloseLine)`
   width: 30px;
   height: 30px;
+`
+export const ChoiceContainer = styled.ul`
+  list-style-type: none;
+  padding-left: 0px;
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 `

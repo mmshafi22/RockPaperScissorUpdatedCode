@@ -1,6 +1,7 @@
 import Popup from 'reactjs-popup'
 import {Component} from 'react'
-import {RiCloseLine} from 'react-icons/ri'
+import OptionItem from '../OptionItem'
+import ResultsView from '../ResultsView'
 import {
   GameBgContainer,
   GameViewContainer,
@@ -15,6 +16,7 @@ import {
   ButtonClose,
   RulesImg,
   CloseIcon,
+  ChoiceContainer,
 } from './styledComponents'
 
 const choicesList = [
@@ -37,10 +39,86 @@ const choicesList = [
 
 class RockPaperScissorGame extends Component {
   state = {
-    score: '',
+    score: 0,
     userOption: '',
-    opponentChoice: choicesList[Math.floor(Math.random() * 3) - 1].id,
+    opponentOption: choicesList[Math.floor(Math.random() * 3) - 1].id,
     isGameRunning: true,
+    gameResult: '',
+  }
+
+  onClickChoice = id => {
+    const isWon = this.checkTheResults(id)
+    if (isWon === 'YOU WON') {
+      this.setState(prevState => ({
+        score: prevState.score + 1,
+        userOption: id,
+        isGameRunning: false,
+        gameResult: isWon,
+      }))
+    } else if (isWon === 'YOU LOSE') {
+      this.setState(prevState => ({
+        score: prevState.score - 1,
+        userOption: id,
+        isGameRunning: false,
+        gameResult: isWon,
+      }))
+    } else {
+      this.setState({userOption: id, isGameRunning: false, gameResult: isWon})
+    }
+  }
+
+  onPlayAgain = () => {
+    const randomChoice = choicesList[Math.floor(Math.random() * 3) - 1].id
+    this.setState({opponentOption: randomChoice, isGameRunning: true})
+  }
+
+  renderResultsView = () => {
+    const {userOption, opponentOption, gameResult} = this.state
+    const userChoice = choicesList.find(
+      eachChoice => eachChoice.id === userOption,
+    )
+    const opponentChoice = choicesList.find(each => each.id === opponentOption)
+    return (
+      <ResultsView
+        userDetails={userChoice}
+        opponentDetails={opponentChoice}
+        result={gameResult}
+        onPlayAgain={this.onPlayAgain}
+      />
+    )
+  }
+
+  renderGameView = () => (
+    <ChoiceContainer>
+      {choicesList.map(each => (
+        <OptionItem
+          key={each.id}
+          details={each}
+          onClickChoice={this.onClickChoice}
+        />
+      ))}
+    </ChoiceContainer>
+  )
+
+  checkTheResults = id => {
+    const {opponentOption} = this.state
+    let result
+    if (id === 'ROCK' && opponentOption === 'SCISSORS') {
+      result = 'YOU WON'
+    } else if (id === 'ROCK' && opponentOption === 'PAPER') {
+      result = 'YOU LOSE'
+    } else if (id === 'SCISSORS' && opponentOption === 'PAPER') {
+      result = 'YOU WON'
+    } else if (id === 'SCISSORS' && opponentOption === 'ROCK') {
+      result = 'YOU LOSE'
+    } else if (id === 'PAPER' && opponentOption === 'ROCK') {
+      result = 'YOU WON'
+    } else if (id === 'PAPER' && opponentOption === 'SCISSORS') {
+      result = 'YOU LOSE'
+    } else {
+      result = 'IT IS DRAW'
+    }
+    return result
   }
 
   render() {
@@ -50,24 +128,22 @@ class RockPaperScissorGame extends Component {
       height: '350px',
       padding: '10px',
     }
+    const {isGameRunning, score} = this.state
     return (
       <GameBgContainer>
         <GameViewContainer>
           <ScoreContainer>
-            <GameNameContainer>
-              <GameName>ROCK</GameName>
-              <GameName>PAPER</GameName>
-              <GameName>SCISSORS</GameName>
-            </GameNameContainer>
+            <GameName>Rock Paper Scissors</GameName>
             <Score>
               <ScoreHeading>Score</ScoreHeading>
-              <ScoreParagraph>0</ScoreParagraph>
+              <ScoreParagraph>{score}</ScoreParagraph>
             </Score>
           </ScoreContainer>
+          {isGameRunning ? this.renderGameView() : this.renderResultsView()}
           <>
             <Popup
               modal
-              trigger={<ButtonRules type="button">RULES</ButtonRules>}
+              trigger={<ButtonRules type="button">Rules</ButtonRules>}
               contentStyle={contentStyles}
             >
               {close => (
