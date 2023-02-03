@@ -6,7 +6,6 @@ import {
   GameBgContainer,
   GameViewContainer,
   ScoreContainer,
-  GameNameContainer,
   GameName,
   Score,
   ScoreHeading,
@@ -41,7 +40,8 @@ class RockPaperScissorGame extends Component {
   state = {
     score: 0,
     userOption: '',
-    opponentOption: choicesList[Math.floor(Math.random() * 3) - 1].id,
+    opponentOption:
+      choicesList[Math.floor(Math.random() * choicesList.length) - 1].id,
     isGameRunning: true,
     gameResult: '',
   }
@@ -68,7 +68,8 @@ class RockPaperScissorGame extends Component {
   }
 
   onPlayAgain = () => {
-    const randomChoice = choicesList[Math.floor(Math.random() * 3) - 1].id
+    const len = choicesList.length
+    const randomChoice = choicesList[Math.floor(Math.random() * len) - 1].id
     this.setState({opponentOption: randomChoice, isGameRunning: true})
   }
 
